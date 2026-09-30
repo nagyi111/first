@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { RandomQuote } from './randomQuote';
 
 import {
     FaDiceOne,
@@ -61,6 +62,8 @@ export const Dices = () => {
         >
             Reset
         </button>
+
+        <RandomQuote diceValue={nr} />
 
     </div>
 );

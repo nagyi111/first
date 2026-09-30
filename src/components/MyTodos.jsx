@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Button } from '@heroui/react';
 import { todosData } from './data';
@@ -7,6 +7,12 @@ import { todosData } from './data';
 export const MyTodos = () => {
 
     const [todos, setTodos] = useState(todosData);
+    const [remaining, setRemaining] = useState(0);
+
+    useEffect(() => {
+        const count = todos.filter(({ done }) => !done).length;
+        setRemaining(count);
+    }, [todos]);
 
 
     const handleDelete = (id) => {
@@ -29,14 +35,16 @@ export const MyTodos = () => {
         );
     };
 
-    const handleAdd=(descr)=>{
-        const NewTodo={
-            id:Date.now(),
+
+    const handleAdd = (descr) => {
+        const newTodo = {
+            id: Date.now(),
             descr,
-            done:false
-        }
-        setTodos(prev=>[...prev,NewTodo])
-    }
+            done: false
+        };
+
+        setTodos(prev => [...prev, newTodo]);
+    };
 
 
     return (
@@ -84,7 +92,6 @@ export const MyTodos = () => {
                                 onChange={() => handleDone(id)}
                             />
 
-
                             <span
                                 className={
                                     done
@@ -107,12 +114,18 @@ export const MyTodos = () => {
                             <FaRegTrashAlt />
                         </Button>
 
-
                     </li>
 
                 ))}
 
             </ul>
+
+            <div>
+                {remaining === 0
+                    ? "Minden feladat elvégezve"
+                    : `Elvégzetlen feladatok: ${remaining}`
+                }
+            </div>
 
         </div>
     );
